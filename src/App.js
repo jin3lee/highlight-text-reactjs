@@ -56,16 +56,16 @@ while( counter <= string.length ) {
 
     // insert html tag into textGroup
     if( currentColor ) {
-      textGroup.push(<div style={{"background-color": ""+currentColor}}>
+      textGroup.push(<span style={{"background-color": ""+currentColor}}>
                   { string.substring(currentStartIndex, counter) }
-                </div>);
+                </span>);
+      textGroup.push(<span>&nbsp;</span>);
     } else {
-      textGroup.push(<div>
+      textGroup.push(<span>
                   { string.substring(currentStartIndex, counter) }
-                </div>);
+                </span>);
+      textGroup.push(<span>&nbsp;</span>);
     }
-
-    console.log("${current}", currentColor);
 
     // increment
     counter++;
@@ -99,9 +99,9 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <p>
-          {textGroup}
-          </p>
+          <div>
+            { textGroup }
+          </div>
         </header>
       </div>
     );
