@@ -14,21 +14,9 @@ const highlights = [
   {
       startOffset: 17,
       endOffset: 31,
-      color: '#000000',
+      color: '#e8e8e8',
       priority: 1,
   },
-  {
-      startOffset: 25,
-      endOffset: 50,
-      color: '#e8e8e8',
-      priority: 5,
-  },
-  {
-      startOffset: 55,
-      endOffset: 59,
-      color: '#FFFFFF',
-      priority: 2,
-  }
 ];
 
 // sort highlight array by priority
@@ -49,6 +37,45 @@ for( var j = 0; j < highlights.length; j++ ) {
   }
 }
 
+// generate html tags with color for corresponding group of words
+var map = {};
+var index = 0;
+var counter = 0;
+var textGroup = [];
+
+
+while( counter <= string.length ) {
+    // reset color
+    var currentColor = indexColorArray[counter];
+    var currentStartIndex = counter;
+
+    // start with tag for first index
+    while( counter <= string.length - 1 && currentColor == indexColorArray[counter + 1] ) {
+      counter++;
+    }
+
+    // insert html tag into textGroup
+    if( currentColor ) {
+      textGroup.push(<div style={{"background-color": ""+currentColor}}>
+                  { string.substring(currentStartIndex, counter) }
+                </div>);
+    } else {
+      textGroup.push(<div>
+                  { string.substring(currentStartIndex, counter) }
+                </div>);
+    }
+
+    console.log("${current}", currentColor);
+
+    // increment
+    counter++;
+}
+
+console.log(textGroup);
+
+// var test = [];
+// test.push(<div>hi</div>);
+
 // returns true if index is between the highlight param's startOffset & endOffset
 function _charIndexIsWithinHighlightObjectRange ( highlight, index ) {
   return highlight.startOffset <= index && index <= highlight.endOffset;
@@ -65,14 +92,15 @@ function _highlightCompareFunction ( a, b ) {
   }
 }
 
-
 class App extends Component {
   render() {
+
+
     return (
       <div className="App">
         <header className="App-header">
           <p>
-            {string}
+          {textGroup}
           </p>
         </header>
       </div>

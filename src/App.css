@@ -24,8 +24,3 @@
     transform: rotate(360deg);
   }
 }
-
-.Container-left {
-  background-color: #0000FF;
-  flex: 1;
-}
