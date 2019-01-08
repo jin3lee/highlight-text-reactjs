@@ -2,23 +2,30 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const string = 'You will deliver new technology with an adorable puppy. Perfect!';
+const highlights = [
+  {
+      startOffset: 4,
+      endOffset: 20,
+      color: '#d9f593',
+      priority: 0, // lower numbers are higher in priority
+  },
+  {
+      startOffset: 17,
+      endOffset: 31,
+      color: '#e8e8e8',
+      priority: 1,
+  }
+];
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            {string}
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
         </header>
       </div>
     );
