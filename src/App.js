@@ -2,19 +2,31 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const string = 'You will deliver new technology with an adorable puppy. Perfect!';
+const string = '123456789';
 
 const highlights = [
   {
-      startOffset: 4,
-      endOffset: 20,
+      startOffset: 1,
+      endOffset: 2,
       color: '#d9f593',
       priority: 0, // lower numbers are higher in priority
   },
   {
-      startOffset: 17,
-      endOffset: 31,
+      startOffset: 3,
+      endOffset: 4,
       color: '#e8e8e8',
+      priority: 1,
+  },
+  {
+      startOffset: 5,
+      endOffset: 9,
+      color: '#0000FF',
+      priority: 0,
+  },
+  {
+      startOffset: 6,
+      endOffset: 7,
+      color: '#00FF00',
       priority: 1,
   },
 ];
@@ -56,7 +68,7 @@ while( counter <= string.length ) {
 
     // insert html tag into textGroup
     if( currentColor ) {
-      textGroup.push(<span style={{"background-color": ""+currentColor}}>
+      textGroup.push(<span style={{"backgroundColor": ""+currentColor}}>
                   { string.substring(currentStartIndex, counter) }
                 </span>);
       textGroup.push(<span>&nbsp;</span>);
@@ -72,9 +84,6 @@ while( counter <= string.length ) {
 }
 
 console.log(textGroup);
-
-// var test = [];
-// test.push(<div>hi</div>);
 
 // returns true if index is between the highlight param's startOffset & endOffset
 function _charIndexIsWithinHighlightObjectRange ( highlight, index ) {
@@ -94,8 +103,6 @@ function _highlightCompareFunction ( a, b ) {
 
 class App extends Component {
   render() {
-
-
     return (
       <div className="App">
         <header className="App-header">
