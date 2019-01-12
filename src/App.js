@@ -12,7 +12,7 @@ const highlights = [
   },
   {
       startOffset: 17,
-      endOffset: 31,
+      endOffset: 60,
       color: '#e8e8e8',
       priority: 1,
   },
@@ -52,7 +52,7 @@ for( var i = 0; i < textList.length; i++ ) {
   }
 }
 
-// highlight words
+// update word metadata with highlights
 for( var j = 0; j < highlights.length; j++ ) {
 
   var highlight = highlights[j];
@@ -63,7 +63,7 @@ for( var j = 0; j < highlights.length; j++ ) {
 
       // map pointer
       var currentWordMetaData = wordMetaData;
-      
+
       while( highlight
         && currentWordMetaData
         && highlight.endOffset >= currentWordMetaData.endOffset ) {
@@ -75,13 +75,41 @@ for( var j = 0; j < highlights.length; j++ ) {
 
           currentWordMetaData = map[""+currentWordMetaData['nextStartOffset']].metadata;
       }
-  } else {
-    console.log("taco");
   }
 }
 
+// generate texts
+function _generateText() {
 
-console.log(map);
+  var mapKeys = Object.keys(map);
+  var returnHtml = [];
+
+  for( var i = 0; i < mapKeys.length; i++ ) {
+      var wordAndData = map['' + mapKeys[i]];
+
+      if( wordAndData ) {
+        var word = wordAndData['word'];
+        var color = wordAndData['metadata'].color;
+
+        console.log(word, color);
+
+        returnHtml.push(
+          <span style={{"backgroundColor": ""+color}}>
+            { word }
+          </span>
+        );
+
+        returnHtml.push(
+          <span>
+            &nbsp;
+          </span>
+        );
+
+      }
+  }
+
+  return returnHtml;
+}
 
 class App extends Component {
   render() {
@@ -89,7 +117,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div>
-            { string }
+            { _generateText() }
           </div>
         </header>
       </div>
