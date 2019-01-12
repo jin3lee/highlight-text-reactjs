@@ -1,105 +1,87 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-const string = '123456789';
+const string = 'You will deliver new technology with an adorable puppy. Perfect!';
 
 const highlights = [
   {
-      startOffset: 1,
-      endOffset: 2,
+      startOffset: 4,
+      endOffset: 20,
       color: '#d9f593',
       priority: 0, // lower numbers are higher in priority
   },
   {
-      startOffset: 3,
-      endOffset: 4,
+      startOffset: 17,
+      endOffset: 31,
       color: '#e8e8e8',
-      priority: 1,
-  },
-  {
-      startOffset: 5,
-      endOffset: 9,
-      color: '#0000FF',
-      priority: 0,
-  },
-  {
-      startOffset: 6,
-      endOffset: 7,
-      color: '#00FF00',
       priority: 1,
   },
 ];
 
-// sort highlight array by priority
-highlights.sort( _highlightCompareFunction );
+// split words by spaces
+var textList = string.split(' ');
 
-// initialize color array with null
-var indexColorArray = [];
-for( var i = 0; i < string.length; i++ ) {
-  indexColorArray.push(null);
-}
-
-// fill boolean array with background color for each character in 'string'
-for( var j = 0; j < highlights.length; j++ ) {
-  for( var i = 0; i < string.length; i++ ) {
-    if( _charIndexIsWithinHighlightObjectRange( highlights[j] , i ) ) {
-      indexColorArray[i] = highlights[j].color;
-    }
-  }
-}
-
-// generate html tags with color for corresponding group of words
+// generate a list of startOffsetCounter
 var map = {};
-var index = 0;
-var counter = 0;
-var textGroup = [];
+var startOffsetCounter = 0;
+for( var i = 0; i < textList.length; i++ ) {
+  // get word
+  var word = textList[i];
 
+  // check if word is not null
+  if( word ) {
 
-while( counter <= string.length ) {
-    // reset color
-    var currentColor = indexColorArray[counter];
-    var currentStartIndex = counter;
+    // create metadata
+    var valueMetaData = {}
+    valueMetaData['startOffset'] = startOffsetCounter;
+    valueMetaData['endOffset'] = startOffsetCounter + word.length;
+    valueMetaData['color'] = null;
+    valueMetaData['priority'] = Number.MAX_VALUE;  // set default to highest number
+    valueMetaData['nextStartOffset'] = startOffsetCounter + word.length + 1;
 
-    // start with tag for first index
-    while( counter <= string.length - 1 && currentColor == indexColorArray[counter + 1] ) {
-      counter++;
-    }
+    // create value
+    var value = {};
+    value['word'] = word;
+    value['metadata'] = valueMetaData;
 
-    // insert html tag into textGroup
-    if( currentColor ) {
-      textGroup.push(<span style={{"backgroundColor": ""+currentColor}}>
-                  { string.substring(currentStartIndex, counter) }
-                </span>);
-      textGroup.push(<span>&nbsp;</span>);
-    } else {
-      textGroup.push(<span>
-                  { string.substring(currentStartIndex, counter) }
-                </span>);
-      textGroup.push(<span>&nbsp;</span>);
-    }
+    // push the key & value object
+    map["" + startOffsetCounter] = value;
 
-    // increment
-    counter++;
-}
-
-console.log(textGroup);
-
-// returns true if index is between the highlight param's startOffset & endOffset
-function _charIndexIsWithinHighlightObjectRange ( highlight, index ) {
-  return highlight.startOffset <= index && index <= highlight.endOffset;
-}
-
-// comparing highlight objects function
-function _highlightCompareFunction ( a, b ) {
-  if( a.priority < b.priority ) {
-      return -1;
-  } else if( a.priority > b.priority ) {
-      return 1;
-  } else {
-      return 0;
+    // update startOffsetCounter
+    startOffsetCounter += word.length + 1;
   }
 }
+
+// highlight words
+for( var j = 0; j < highlights.length; j++ ) {
+
+  var highlight = highlights[j];
+
+  if( map[highlight.startOffset] ) {
+
+    var wordMetaData = map[highlight.startOffset].metadata;
+
+      // map pointer
+      var currentWordMetaData = wordMetaData;
+      
+      while( highlight
+        && currentWordMetaData
+        && highlight.endOffset >= currentWordMetaData.endOffset ) {
+
+          if( highlight.priority <= currentWordMetaData.priority ) {
+            currentWordMetaData['priority'] = highlight.priority;
+            currentWordMetaData['color'] = highlight.color;
+          }
+
+          currentWordMetaData = map[""+currentWordMetaData['nextStartOffset']].metadata;
+      }
+  } else {
+    console.log("taco");
+  }
+}
+
+
+console.log(map);
 
 class App extends Component {
   render() {
@@ -107,7 +89,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div>
-            { textGroup }
+            { string }
           </div>
         </header>
       </div>
