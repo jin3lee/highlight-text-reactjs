@@ -106,6 +106,7 @@ function _generateText() {
       // once color is different update color and insert prev color collection of words
       if( previousColor != color ) {
           if( phrase.length > 0 ) {
+
               returnHtml.push(
                 <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
               );
@@ -128,46 +129,6 @@ function _generateText() {
           );
       }
     }
-
-    // // if first wordAndData fill in initial values
-    // if( i == 0 || previousColor != color ) {
-    //   previousColor = color;
-    //     var wordAndData = map['' + mapKeys[i]];
-    //
-    //     if( wordAndData ) {
-    //       var word = wordAndData['word'];
-    //       var color = wordAndData['metadata'].color;
-    //
-    //
-    //         var wordList = [];
-    //         var currentColor = previousColor;
-    //         while( currentColor == previousColor ) {
-    //
-    //         }
-    //       }
-
-        // close previous tag and update previousColor
-        // if( previousColor != color ) {
-        //   returnHtml.push(</span>);
-        //   previousColor = color;
-        //   returnHtml.push(<span style={{"backgroundColor": ""+color}}>);
-        // }
-
-        // returnHtml.push(
-        //   <span style={{"backgroundColor": ""+color}}>
-        //     { word }&nbsp;
-        //   </span>
-        // );
-        //
-        // // if last index than close tag
-        // if( i == 0 ) {
-        //   previousColor = color;
-        //   returnHtml.push(
-        //     <span style={{"backgroundColor": ""+color}}>
-        //   );
-        // }
-
-
   }
 
   return returnHtml;
