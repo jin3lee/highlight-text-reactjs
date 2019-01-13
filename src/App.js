@@ -92,31 +92,36 @@ function _generateText() {
 
   // get the rest
   for( var i = 0; i < mapKeys.length; i++ ) {
+
     // get currentColor
     var wordAndData = map['' + mapKeys[i]];
 
+    // if word exist in map proceed to process html
     if( wordAndData ) {
+
+      // get word and color of the word
       var word = wordAndData['word'];
       var color = wordAndData['metadata'].color;
-      console.log("1", word, color);
+
       // once color is different update color and insert prev color collection of words
       if( previousColor != color ) {
-
-        console.log("2");
           if( phrase.length > 0 ) {
-
-            console.log("3", phrase);
               returnHtml.push(
                 <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
               );
           }
           phrase = [];
-          phrase.push(word + " ");
           previousColor = color;
-      } else {
-        phrase.push(word + " ");
       }
 
+      // add word to phrase
+      if( i != mapKeys.length - 1 ) {
+        phrase.push(word + " ");
+      } else {
+        phrase.push(word);
+      }
+
+      // add last word to returnHtml
       if( i == mapKeys.length - 1) {
           returnHtml.push(
             <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
