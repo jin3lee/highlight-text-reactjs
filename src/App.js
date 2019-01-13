@@ -15,7 +15,7 @@ const highlights = [
       endOffset: 60,
       color: '#e8e8e8',
       priority: 1,
-  },
+  }
 ];
 
 // split words by spaces
@@ -64,15 +64,18 @@ for( var j = 0; j < highlights.length; j++ ) {
       // map pointer
       var currentWordMetaData = wordMetaData;
 
+      // iterate through the map until the highlight hits its endOffset
       while( highlight
         && currentWordMetaData
         && highlight.endOffset >= currentWordMetaData.endOffset ) {
 
+          // update color & priority
           if( highlight.priority <= currentWordMetaData.priority ) {
             currentWordMetaData['priority'] = highlight.priority;
             currentWordMetaData['color'] = highlight.color;
           }
 
+          // move pointer to next word&Metadata
           currentWordMetaData = map[""+currentWordMetaData['nextStartOffset']].metadata;
       }
   }
@@ -82,30 +85,84 @@ for( var j = 0; j < highlights.length; j++ ) {
 function _generateText() {
 
   var mapKeys = Object.keys(map);
+
   var returnHtml = [];
+  var previousColor = null;
+  var phrase = [];
 
+  // get the rest
   for( var i = 0; i < mapKeys.length; i++ ) {
-      var wordAndData = map['' + mapKeys[i]];
+    // get currentColor
+    var wordAndData = map['' + mapKeys[i]];
 
-      if( wordAndData ) {
-        var word = wordAndData['word'];
-        var color = wordAndData['metadata'].color;
+    if( wordAndData ) {
+      var word = wordAndData['word'];
+      var color = wordAndData['metadata'].color;
+      console.log("1", word, color);
+      // once color is different update color and insert prev color collection of words
+      if( previousColor != color ) {
 
-        console.log(word, color);
+        console.log("2");
+          if( phrase.length > 0 ) {
 
-        returnHtml.push(
-          <span style={{"backgroundColor": ""+color}}>
-            { word }
-          </span>
-        );
-
-        returnHtml.push(
-          <span>
-            &nbsp;
-          </span>
-        );
-
+            console.log("3", phrase);
+              returnHtml.push(
+                <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
+              );
+          }
+          phrase = [];
+          phrase.push(word + " ");
+          previousColor = color;
+      } else {
+        phrase.push(word + " ");
       }
+
+      if( i == mapKeys.length - 1) {
+          returnHtml.push(
+            <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
+          );
+      }
+    }
+
+    // // if first wordAndData fill in initial values
+    // if( i == 0 || previousColor != color ) {
+    //   previousColor = color;
+    //     var wordAndData = map['' + mapKeys[i]];
+    //
+    //     if( wordAndData ) {
+    //       var word = wordAndData['word'];
+    //       var color = wordAndData['metadata'].color;
+    //
+    //
+    //         var wordList = [];
+    //         var currentColor = previousColor;
+    //         while( currentColor == previousColor ) {
+    //
+    //         }
+    //       }
+
+        // close previous tag and update previousColor
+        // if( previousColor != color ) {
+        //   returnHtml.push(</span>);
+        //   previousColor = color;
+        //   returnHtml.push(<span style={{"backgroundColor": ""+color}}>);
+        // }
+
+        // returnHtml.push(
+        //   <span style={{"backgroundColor": ""+color}}>
+        //     { word }&nbsp;
+        //   </span>
+        // );
+        //
+        // // if last index than close tag
+        // if( i == 0 ) {
+        //   previousColor = color;
+        //   returnHtml.push(
+        //     <span style={{"backgroundColor": ""+color}}>
+        //   );
+        // }
+
+
   }
 
   return returnHtml;
