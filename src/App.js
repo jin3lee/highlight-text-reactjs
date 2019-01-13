@@ -104,7 +104,7 @@ function _generateText() {
       var color = wordAndData['metadata'].color;
 
       // once color is different update color and insert prev color collection of words
-      if( previousColor != color ) {
+      if( previousColor !== color ) {
           if( phrase.length > 0 ) {
 
               returnHtml.push(
@@ -116,14 +116,14 @@ function _generateText() {
       }
 
       // add word to phrase
-      if( i != mapKeys.length - 1 ) {
+      if( i !== mapKeys.length - 1 ) {
         phrase.push(word + " ");
       } else {
         phrase.push(word);
       }
 
       // add last word to returnHtml
-      if( i == mapKeys.length - 1) {
+      if( i === mapKeys.length - 1) {
           returnHtml.push(
             <span style={{"backgroundColor": ""+previousColor}}>{phrase}</span>
           );
